@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 
 namespace Game.Data {
-    public class InGameData {
-        public int gold;
+    public class InGameData : GameData{
         public List<object> buffList;
     }
 }

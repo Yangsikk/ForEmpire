@@ -7,9 +7,8 @@ namespace Game {
         public InitProcess() {
             
         }
-        public AsyncOperation Initialize() {
+        public void Initialize() {
             Debug.Log("Initialize");
-            return SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
         }
     }
 }

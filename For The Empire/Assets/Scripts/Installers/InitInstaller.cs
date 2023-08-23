@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Game {
@@ -12,12 +13,14 @@ namespace Game {
             Container.Bind<LoadingProcess>().AsSingle();
         }
 
-        public void Awake() {
+        private void Awake() {
             init = Container.Resolve<InitProcess>();
-            init.Initialize();
             loading = Container.Resolve<LoadingProcess>();
+            init.Initialize();
             loading.LoadScene("LobbyScene");
         }
-        
+        private void OnDestroy() {
+
+        }        
     }
 }

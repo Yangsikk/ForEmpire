@@ -12,6 +12,7 @@ public class LoadingProcess {
     }
     public async void LoadEnd() {
         await UniTask.Delay(3000);
+        if(SceneManager.sceneCount < 2) return;
         var operaion = SceneManager.UnloadSceneAsync("LoadingScene");
     }
 

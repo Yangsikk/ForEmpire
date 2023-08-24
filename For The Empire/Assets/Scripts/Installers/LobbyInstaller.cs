@@ -2,15 +2,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class LobbyInstaller : MonoInstaller
+public class LobbyInstaller : BaseInstaller
 {
-    LoadingProcess loading;
+    LobbyUIProcess uiProcess;
     public override void InstallBindings()
     {
-        Container.Bind<LoadingProcess>().AsSingle();
+        base.InstallBindings();
+        Container.Bind<LobbyUIProcess>().AsSingle();
     }
-    public void Awake() {
-        loading = Container.Resolve<LoadingProcess>();
+    protected override void Awake() {
+        base.Awake();
         loading.LoadEnd();
+        uiProcess = Container.Resolve<LobbyUIProcess>();
+        uiProcess.Initialize();
+        uiProcess.AddEnterDungeon(() => { loading.LoadScene("DungeonScene"); });
+        uiProcess.AddEnterStage(() => { loading.LoadScene("StageScene"); });
     }
 }

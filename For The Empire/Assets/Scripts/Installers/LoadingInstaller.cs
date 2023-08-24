@@ -1,11 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class LoadingInstaller : MonoInstaller
+public class LoadingInstaller : BaseInstaller
 {
-    public override void InstallBindings()
-    {
-        Container.Bind<LoadingProcess>().AsSingle().NonLazy();
-    }
-
+    
 }

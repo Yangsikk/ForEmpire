@@ -3,24 +3,23 @@ using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Game {
-    public class InitInstaller : MonoInstaller
+    public class InitInstaller : BaseInstaller
     {
         InitProcess init;
-        LoadingProcess loading;
         public override void InstallBindings()
         {
+            base.InstallBindings();
             Container.Bind<InitProcess>().AsSingle();
-            Container.Bind<LoadingProcess>().AsSingle();
         }
 
-        private void Awake() {
+        protected override void Awake() {
+            base.Awake();
             init = Container.Resolve<InitProcess>();
-            loading = Container.Resolve<LoadingProcess>();
             init.Initialize();
             loading.LoadScene("LobbyScene");
         }
         private void OnDestroy() {
-
+            GameObject.Destroy(this);
         }        
     }
 }

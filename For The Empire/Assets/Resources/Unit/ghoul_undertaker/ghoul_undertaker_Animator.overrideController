@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ghoul_undertaker_Animator
+  m_Controller: {fileID: 9100000, guid: 5e1908c03d92b9548b8bf7a4b7a0d236, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 05ab73492cb158f4ea3f8c7eb6f67689, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ad159ba31743967488dcd1654af33762, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 07865812ce44ffa4b9e63b94407cc33b, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 9465cf2a8eaebf04fb282e4f5e2b30f5, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 2921f3189621121409280397b550dad9, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6ac5eb6ccccbf8544ab24338f46b3efe, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 2f91afb236d4df9489817081d7167a09, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: cb4a2f7aa41fd7e4ba072edf62f83422, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 4550d4a5b423f9141967cc5e7d7b918d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a59bc2cef6e8df94b83509245265acff, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 3ebd2b82dc7fb214f9b99a556f67f781, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6ac5eb6ccccbf8544ab24338f46b3efe, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: dbc1a07c8cd61fc4cae2f818bcb1e0af, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: cb4a2f7aa41fd7e4ba072edf62f83422, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 70473e200a000434a918aa52dd5eec12, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 01d241425e50d5a4ebb19518da26bad2, type: 2}

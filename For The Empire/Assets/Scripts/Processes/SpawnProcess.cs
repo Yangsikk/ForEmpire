@@ -6,6 +6,20 @@ public enum SpawnType {
     Building,
     Enemy
 }
+public enum UnitType {
+    Melee,
+    Range
+}
+
+public enum UnitTribe {
+    Human,
+    Dwarf,
+    Dragon,
+    Ghoul,
+    Skull,
+    Troll,
+    Zombie
+}
 
 public class SpawnProcess {
     GameObject root;
@@ -29,9 +43,9 @@ public class SpawnProcess {
         go.transform.position = pos;
         return go;
     }
-    public GameObject Spawn(string name, SpawnType type) {
+    public GameObject Spawn(string name, UnitType type, UnitTribe tribe) {
         var go = Spawn(name);
-        EventController.Event.Emit<SpawnUnit>(new SpawnUnit() {gameObject = go, type = type});
+        EventController.Event.Emit<SpawnUnit>(new SpawnUnit() {gameObject = go, type = type, tribe = tribe});
         return go;
     }
     

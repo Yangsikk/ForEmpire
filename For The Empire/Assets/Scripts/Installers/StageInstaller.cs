@@ -24,7 +24,7 @@ namespace Game {
 
         public void Update() {
             if(Input.GetMouseButtonDown(0)) {
-                spawn.Spawn("test", SpawnType.Unit);
+                spawn.Spawn("test", UnitType.Melee, UnitTribe.Human);
             }
         }
         private void OnDestroy() {

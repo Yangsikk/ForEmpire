@@ -1,7 +1,9 @@
 using UnityEngine;
+using Pathfinding;
 
 public interface IMove {
     public MoveAbility move {get; set;}
+    
 }
 
 public class MoveAbility {

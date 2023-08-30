@@ -38,10 +38,28 @@ public class SpawnProcess {
         gameObjects.Add(go);
         return go;
     }
+    public GameObject Spawn(string name, SpawnType type) {
+        GameObject go;
+        go = SpawnEnemy(name);
+        switch(type) {
+            case SpawnType.Enemy : 
+            break;
+        }
+
+        return go;
+    }
     public GameObject Spawn(string name, Vector3 pos) {
         var go = Spawn(name);
+        GameObject.CreatePrimitive(PrimitiveType.Sphere).transform.SetParent(go.transform);
         go.transform.position = pos;
         return go;
+    }
+    private GameObject SpawnEnemy(string name) {
+        var go = Spawn(name);
+        return go;
+    }
+    private GameObject SpawnUnit(string name) {
+        return null;
     }
     public GameObject Spawn(string name, UnitType type, UnitTribe tribe) {
         var go = Spawn(name);

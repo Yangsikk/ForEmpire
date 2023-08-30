@@ -6,6 +6,7 @@ namespace Game {
     {
         SpawnProcess spawn;
         UnitProcess unit;
+        Transform target;
         public override void InstallBindings()
         {
             base.InstallBindings();
@@ -20,11 +21,17 @@ namespace Game {
 
             spawn.Initialize();
             unit.Initialize();
+            target = spawn.Spawn("target", new Vector3(-5f, 0.1f, -10f)).transform;
         }
 
         public void Update() {
             if(Input.GetMouseButtonDown(0)) {
                 spawn.Spawn("test", UnitType.Melee, UnitTribe.Human);
+            }
+            if(Input.GetKeyDown(KeyCode.S)) {
+                var enemy = spawn.Spawn("enemy", SpawnType.Enemy);
+                enemy.transform.position = new Vector3(10f, 0f, 20f);
+                EventController.Event.Emit<SpawnEnemy>(new SpawnEnemy() {gameObject = enemy, target = target});
             }
         }
         private void OnDestroy() {

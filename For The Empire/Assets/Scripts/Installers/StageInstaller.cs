@@ -21,7 +21,7 @@ namespace Game {
 
             spawn.Initialize();
             unit.Initialize();
-            target = spawn.Spawn("target", new Vector3(-5f, 0.1f, -10f)).transform;
+            target = spawn.Spawn("target", new Vector3(-50f, 0.1f, -10f)).transform;
         }
 
         public void Update() {
@@ -30,7 +30,7 @@ namespace Game {
             }
             if(Input.GetKeyDown(KeyCode.S)) {
                 var enemy = spawn.Spawn("enemy", SpawnType.Enemy);
-                enemy.transform.position = new Vector3(10f, 0f, 20f);
+                enemy.transform.position = new Vector3(30f, 0f, 20f);
                 EventController.Event.Emit<SpawnEnemy>(new SpawnEnemy() {gameObject = enemy, target = target});
             }
         }

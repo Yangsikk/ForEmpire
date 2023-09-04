@@ -26,6 +26,7 @@ public class MeleeUnit : BaseUnitModel, IAttack, IMove {
         if(Vector3.Distance(transform.position, destinationSetter.target.position) < 5) {
             destinationSetter.target = transform;
             path.OnTargetReached();
+            destinationSetter.target = null;
         }
     }
     

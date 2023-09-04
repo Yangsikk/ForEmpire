@@ -16,6 +16,7 @@ public class UnitProcess {
                 if(e.type == UnitType.Melee) {
                     VHumanKnight knight = new();
                     var go = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(knight.prefabPath));
+                    go.tag = "Unit";
                     go.transform.SetParent(e.gameObject.transform);
                     go.AddComponent<MeleeUnit>();
                 }
@@ -25,6 +26,7 @@ public class UnitProcess {
     public void OnSpawnEnemy(SpawnEnemy e) {
         VHumanKnight knight = new();
         var go = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(knight.prefabPath));
+        go.tag = "Unit";
         go.transform.SetParent(e.gameObject.transform);
         go.transform.localPosition = Vector3.zero;
         var melee = go.AddComponent<MeleeUnit>();

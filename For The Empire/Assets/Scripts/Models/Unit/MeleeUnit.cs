@@ -22,23 +22,28 @@ public class MeleeUnit : BaseUnitModel, IAttack, IMove {
         ai.radius = 1f;
     }
     public void Update() {
+        if(destinationSetter.target == null) return;
+        if(Vector3.Distance(transform.position, destinationSetter.target.position) < 5) {
+            destinationSetter.target = transform;
+            path.OnTargetReached();
+        }
     }
     
     public void SetDest(Transform target) {
         destinationSetter.target = target;
     }
     private void OnTriggerEnter(Collider collider) {
-        if(collider.gameObject.layer == 3) return;
+        if(!collider.gameObject.CompareTag("Unit") && !collider.gameObject.CompareTag("Building")) return;
         destinationSetter.target = collider.transform;
         Debug.Log($"enter : {collider}");
     }
     
     private void OnTriggerExit(Collider collider) {
-        if(collider.gameObject.layer == 3) return;
+        if(!collider.gameObject.CompareTag("Unit") && !collider.gameObject.CompareTag("Building")) return;
         Debug.Log($"exit : {collider}");
     }
     private void OnCollisionEnter(Collision collider) {
-        if(collider.gameObject.layer == 3) return;
+        if(!collider.gameObject.CompareTag("Unit") && !collider.gameObject.CompareTag("Building")) return;
         Debug.Log(collider);
     }
 

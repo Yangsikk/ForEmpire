@@ -6,7 +6,8 @@ public class RangeUnit : BaseUnitModel, IAttack, IMove {
     public MoveAbility move {get; set;}
     public ITarget target {get; set;}
     public AIDestinationSetter destinationSetter {get; set;}
-    public void Awake() {
+    protected override void Awake() {
+        base.Awake();
         destinationSetter = gameObject.AddComponent<AIDestinationSetter>();
     }
 }

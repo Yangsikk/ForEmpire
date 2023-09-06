@@ -8,3 +8,7 @@ public class SpawnEnemy : IEvent {
     public GameObject gameObject;
     public Transform target;
 }
+
+public class SpawnProjectile : IEvent {
+    public ProjectileType type;
+}

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+public enum ProjectileType {
+    simple, ice, magic
+}
 public abstract class BaseProjectile : MonoBehaviour,IProjectile {
     public bool IsLaunched {get; protected set;}
     public Vector3 startPostion {get => transform.position;}

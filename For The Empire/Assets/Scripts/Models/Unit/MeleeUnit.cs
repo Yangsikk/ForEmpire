@@ -54,6 +54,7 @@ public class MeleeUnit : BaseUnitModel, IAttack, IMove {
     }
     public void Attack() {
         fsm.ChangeState(UnitState.Attack);
+        
     }
 
 }

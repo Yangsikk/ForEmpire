@@ -1,3 +1,3 @@
 public class VHumanKnight {
-    public readonly string prefabPath = "Unit/human_knight/human_knight";
+    public readonly string prefabPath = "Units/human_knight/human_knight";
 }

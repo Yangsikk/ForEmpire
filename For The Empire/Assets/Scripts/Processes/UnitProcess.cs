@@ -18,7 +18,8 @@ public class UnitProcess {
                     var go = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(knight.prefabPath));
                     go.tag = "Unit";
                     go.transform.SetParent(e.gameObject.transform);
-                    go.AddComponent<MeleeUnit>();
+                    var melee = go.AddComponent<MeleeUnit>();
+                    melee.teamIndex = 0;
                 }
             break;
         }
@@ -30,6 +31,7 @@ public class UnitProcess {
         go.transform.SetParent(e.gameObject.transform);
         go.transform.localPosition = Vector3.zero;
         var melee = go.AddComponent<MeleeUnit>();
+        melee.teamIndex = 1;
         melee.SetDest(e.target);
     }
 }

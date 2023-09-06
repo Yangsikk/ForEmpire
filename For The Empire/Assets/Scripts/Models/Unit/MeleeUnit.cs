@@ -4,7 +4,7 @@ using MonsterLove.StateMachine;
 public class MeleeUnit : BaseUnitModel, IAttack, IMove {
     public AttackAbility attack {get ;set;}
     public MoveAbility move {get; set;}
-    public ITarget target {get; set;}
+    public ITarget target {get; set;} = null;
     public AIDestinationSetter destinationSetter {get; set;}
     IAstarAI ai;
     AIPath path;
@@ -27,9 +27,10 @@ public class MeleeUnit : BaseUnitModel, IAttack, IMove {
     public void Update() {
         if(destinationSetter.target == null) return;
         if(Vector3.Distance(transform.position, destinationSetter.target.position) < 5) {
+            if(target != null) Attack();
+            else fsm.ChangeState(UnitState.Idle);
             destinationSetter.target = transform;
             path.OnTargetReached();
-            fsm.ChangeState(UnitState.Idle);
         }
     }
     private void OnStop() {
@@ -41,17 +42,18 @@ public class MeleeUnit : BaseUnitModel, IAttack, IMove {
     }
     private void OnTriggerEnter(Collider collider) {
         if(!collider.gameObject.CompareTag("Unit") && !collider.gameObject.CompareTag("Building")) return;
+        if(!CheckTarget(collider.gameObject)) return;
+        target = collider.GetComponent<BaseUnitModel>();
         SetDest(collider.transform);
-        Debug.Log($"enter : {collider}");
     }
-    
     private void OnTriggerExit(Collider collider) {
         if(!collider.gameObject.CompareTag("Unit") && !collider.gameObject.CompareTag("Building")) return;
-        Debug.Log($"exit : {collider}");
     }
     private void OnCollisionEnter(Collision collider) {
         if(!collider.gameObject.CompareTag("Unit") && !collider.gameObject.CompareTag("Building")) return;
-        Debug.Log(collider);
+    }
+    public void Attack() {
+        fsm.ChangeState(UnitState.Attack);
     }
 
 }

@@ -10,4 +10,7 @@ public class RangeUnit : BaseUnitModel, IAttack, IMove {
         base.Awake();
         destinationSetter = gameObject.AddComponent<AIDestinationSetter>();
     }
+    public void Attack() {
+        
+    }
 }

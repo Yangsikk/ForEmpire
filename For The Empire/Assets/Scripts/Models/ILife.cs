@@ -8,10 +8,10 @@ public class LifeAbility {
     public int hp;
     public int shield;
     public float armor;
-    public bool isAlive {get => hp <= 0;}
+    public bool isAlive {get => hp > 0;}
     public GameObject lastAttacker;
 
-    public LifeAbility(int hp) { maxHp = hp;}
+    public LifeAbility(int hp) { maxHp = hp; this.hp = maxHp;}
     public LifeAbility(int currentHp, int maxHp) { hp = currentHp; this.maxHp = maxHp;}
     public bool Damage(float damage, GameObject attacker) {
         if(!isAlive) return false;
@@ -22,7 +22,7 @@ public class LifeAbility {
         }
         hp -= (int)damage;
         hp = hp < 0 ? 0 : hp;
-
+        Debug.Log($"Damaged {damage} by {attacker} - hp : {hp}");
         return isAlive;
     }
     public void Heal(int amount) {
@@ -34,7 +34,7 @@ public class LifeAbility {
         hp += amount;
         maxHp += amount;
     }
-    public void Die() {
+    public void Kill() {
         hp = 0;
     }
 }

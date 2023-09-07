@@ -1,6 +1,7 @@
+using UnityEngine;
 public interface IAttack {
     public AttackAbility attack {get; set;}
-    public ITarget target {get; set;}
+    public Transform target {get; set;}
     public void Attack();
 }
 

@@ -53,12 +53,13 @@ public class ObjectPoolProcess {
     }
 
     public void OnSpawnProejectile(SpawnProjectile e)  {
-        Debug.Log(ProjectilePool.ContainsKey(e.type));
-        Debug.Log(ProjectilePool.TryGetValue(e.type, out var pool));
+        ProjectilePool.TryGetValue(e.type, out var pool);
         var go = pool.Get();
-        OnDespawn(pool, go);
+        go.transform.position = e.position;
+        go.transform.Rotate((go.transform.position - e.target).normalized);
+        DespawnPool(pool, go);
     }
-    public async void OnDespawn(IObjectPool<GameObject> pool, GameObject go) {
+    public async void DespawnPool(IObjectPool<GameObject> pool, GameObject go) {
         await UniTask.Delay(5000);
         if(go == null) return;
         pool.Release(go);

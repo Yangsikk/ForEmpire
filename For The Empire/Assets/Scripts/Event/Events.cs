@@ -11,4 +11,6 @@ public class SpawnEnemy : IEvent {
 
 public class SpawnProjectile : IEvent {
     public ProjectileType type;
+    public Vector3 position;
+    public Vector3 target;
 }

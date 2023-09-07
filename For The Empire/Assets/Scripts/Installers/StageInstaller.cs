@@ -38,13 +38,13 @@ namespace Game {
                 EventController.Event.Emit<SpawnEnemy>(new SpawnEnemy() {gameObject = enemy, target = target});
             }
             if(Input.GetKeyDown(KeyCode.Q)) {
-                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.simple});
+                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.simple, position = Vector3.one * Random.Range(0f, 5f), target = target.position});
             }
             if(Input.GetKeyDown(KeyCode.W)) {
-                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.ice});
+                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.ice, position = Vector3.one * Random.Range(0f, 5f), target = target.position});
             }
             if(Input.GetKeyDown(KeyCode.E)) {
-                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.magic});
+                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.magic, position = Vector3.one * Random.Range(0f, 5f), target = target.position});
             }
         }
         private void OnDestroy() {

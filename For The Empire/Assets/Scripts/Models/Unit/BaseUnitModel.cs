@@ -21,7 +21,6 @@ public abstract class BaseUnitModel : MonoBehaviour, ILife, ITarget, IAnimator{
 		fsm.Driver.Update.Invoke();
 	}
     protected void Idle_Enter() {
-        Debug.Log("Enter Idle");
         animator.SetBool("Move", false);
         animator.Play("Idle");
     }
@@ -41,9 +40,10 @@ public abstract class BaseUnitModel : MonoBehaviour, ILife, ITarget, IAnimator{
         animator.SetBool("Move", true);
     }
     protected void Die_Enter() {
-
+        Destroy(gameObject);
+        var effect = GameObject.Instantiate(Resources.Load<GameObject>("Effects/GenericDeath"), transform.position + (Vector3.up * 5), Quaternion.identity);
+        Destroy(effect, 2f);
     }
-
     protected bool CheckTarget(GameObject go) {
         var unitModel = go.GetComponent<BaseUnitModel>();
         if(unitModel == null) return false;

@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Pool;
+using Cysharp.Threading.Tasks;
 public class HS_ProjectileMover : MonoBehaviour
 {
     public float speed = 15f;
@@ -12,14 +13,17 @@ public class HS_ProjectileMover : MonoBehaviour
     public GameObject flash;
     private Rigidbody rb;
     public GameObject[] Detached;
-
-    void Start()
+    public bool isStart = false;
+    public IObjectPool<GameObject> pool;
+    public void Init(IObjectPool<GameObject> pool, Vector3 pos, float speed)
     {
+        this.pool = pool;
+        this.speed = speed;
         rb = GetComponent<Rigidbody>();
         if (flash != null)
         {
             //Instantiate flash effect on projectile position
-            var flashInstance = Instantiate(flash, transform.position, Quaternion.identity);
+            var flashInstance = Instantiate(flash, pos, Quaternion.identity);
             flashInstance.transform.forward = gameObject.transform.forward;
             
             //Destroy flash effect depending on particle Duration time
@@ -34,9 +38,13 @@ public class HS_ProjectileMover : MonoBehaviour
                 Destroy(flashInstance, flashPsParts.main.duration);
             }
         }
-        Destroy(gameObject,5);
+        DespawnPool();
 	}
-
+    public async void DespawnPool() {
+        await UniTask.Delay(5000);
+        if(!gameObject.activeSelf) return;
+        pool.Release(gameObject);
+    }
     void FixedUpdate ()
     {
 		if (speed != 0)
@@ -83,11 +91,11 @@ public class HS_ProjectileMover : MonoBehaviour
         {
             if (detachedPrefab != null)
             {
-                detachedPrefab.transform.parent = null;
-                Destroy(detachedPrefab, 1);
+                // detachedPrefab.transform.parent = null;
+                // Destroy(detachedPrefab, 1);
             }
         }
         //Destroy projectile on collision
-        Destroy(gameObject);
+        pool.Release(gameObject);
     }
 }

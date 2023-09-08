@@ -38,13 +38,19 @@ namespace Game {
                 EventController.Event.Emit<SpawnEnemy>(new SpawnEnemy() {gameObject = enemy, target = target});
             }
             if(Input.GetKeyDown(KeyCode.Q)) {
-                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.simple, position = Vector3.one * Random.Range(0f, 5f), target = target.position});
+                var x = Random.Range(-5f, 5f);
+                var z = Random.Range(-5f, 5f);
+                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.simple, position = new Vector3(x, 1, z), target = target});
             }
             if(Input.GetKeyDown(KeyCode.W)) {
-                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.ice, position = Vector3.one * Random.Range(0f, 5f), target = target.position});
+                var x = Random.Range(-5f, 5f);
+                var z = Random.Range(-5f, 5f);
+                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.ice, position = new Vector3(x, 1, z), target = target});
             }
             if(Input.GetKeyDown(KeyCode.E)) {
-                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.magic, position = Vector3.one * Random.Range(0f, 5f), target = target.position});
+                var x = Random.Range(-5f, 5f);
+                var z = Random.Range(-5f, 5f);
+                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.magic, position = new Vector3(x, 1, z), target = target});
             }
         }
         private void OnDestroy() {

@@ -10,6 +10,8 @@ public abstract class BaseProjectile : MonoBehaviour,IProjectile {
     public Vector3 targetPosition {get; protected set;}
     public float speed { get; set;} = 5;
     public IAttack owner {get; protected set;}
+    public virtual void Initialize() { 
+    }
     public void Launch(Vector3 targetPos) {
         IsLaunched = true;
         targetPosition = targetPos;

@@ -9,22 +9,20 @@ public class ObjectPoolProcess {
     public Dictionary<ProjectileType, IObjectPool<GameObject>> ProjectilePool = new();
     public void Initialize() {
         EventController.Event.On<SpawnProjectile>(OnSpawnProejectile);
+        EventController.Event.On<DespawnPool>(OnDespawnPool);
         CreatePools();
     }
     public void Release() {
         EventController.Event.Off<SpawnProjectile>(OnSpawnProejectile);
+        EventController.Event.Off<DespawnPool>(OnDespawnPool);
     }
     public void CreatePools() {
         CreatePool(ProjectileType.simple, CreateSimpleProjectile);
         CreatePool(ProjectileType.ice, CreateIceProjectile);
         CreatePool(ProjectileType.magic, CreateMagicProjectile);
     }
-    private void CreatePool(ProjectileType type, System.Func<GameObject> action) {
-        var pool = new ObjectPool<GameObject>(action, OnGet, OnRelease, OnDestroy, true, defaultSize, maxSize);
-        for(var i = 0 ; i < defaultSize; i++) {
-            var go = action();
-            pool.Release(go);
-        }
+    private void CreatePool(ProjectileType type, System.Func<GameObject> func) {
+        var pool = new ObjectPool<GameObject>(func, OnGet, OnRelease, OnDestroy, true, defaultSize, maxSize);
         ProjectilePool.Add(type, pool);
     }
     private GameObject CreateSimpleProjectile() {
@@ -38,13 +36,13 @@ public class ObjectPoolProcess {
     }
     
     private void OnGet(GameObject go) {
-        go.SetActive(true);
+        go?.SetActive(true);
     }
     private void OnRelease(GameObject go) {
-        go.SetActive(false);
+        go?.SetActive(false);
     }
     private void OnDestroy(GameObject go) {
-        GameObject.Destroy(go);
+        // GameObject.Destroy(go);
     }
     private GameObject CreateProjectile<T>(string path) where T: BaseProjectile {
         var go = GameObject.Instantiate(Resources.Load<GameObject>(path));
@@ -56,12 +54,16 @@ public class ObjectPoolProcess {
         ProjectilePool.TryGetValue(e.type, out var pool);
         var go = pool.Get();
         go.transform.position = e.position;
-        go.transform.Rotate((go.transform.position - e.target).normalized);
-        DespawnPool(pool, go);
+        go.transform.LookAt(e.target);
+        go.SetActive(true);
+        var projectile = go.GetComponent<BaseProjectile>();
+        projectile.Initialize();
+        
+        go.GetComponent<HS_ProjectileMover>().Init(pool, e.position, projectile.speed);
     }
-    public async void DespawnPool(IObjectPool<GameObject> pool, GameObject go) {
-        await UniTask.Delay(5000);
-        if(go == null) return;
-        pool.Release(go);
+    
+    public void OnDespawnPool(DespawnPool e) {
+        if(!e.go.activeSelf) return;
+        e.pool.Release(e.go);
     }
 }

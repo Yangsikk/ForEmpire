@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Pool;
 public class SpawnUnit : IEvent {
     public GameObject gameObject;
     public UnitType type;
@@ -12,5 +13,9 @@ public class SpawnEnemy : IEvent {
 public class SpawnProjectile : IEvent {
     public ProjectileType type;
     public Vector3 position;
-    public Vector3 target;
+    public Transform target;
+}
+public class DespawnPool : IEvent { 
+    public IObjectPool<GameObject> pool;
+    public GameObject go;
 }

@@ -4,8 +4,8 @@ using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 
 public class ObjectPoolProcess {
-    int defaultSize = 15;
-    int maxSize = 30;
+    int defaultSize = 30;
+    int maxSize = 100;
     public Dictionary<ProjectileType, IObjectPool<GameObject>> ProjectilePool = new();
     public void Initialize() {
         EventController.Event.On<SpawnProjectile>(OnSpawnProejectile);
@@ -53,13 +53,13 @@ public class ObjectPoolProcess {
     public void OnSpawnProejectile(SpawnProjectile e)  {
         ProjectilePool.TryGetValue(e.type, out var pool);
         var go = pool.Get();
-        go.transform.position = e.position;
+        go.transform.position = e.owner.transform.position + e.owner.transform.forward;
         go.transform.LookAt(e.target);
         go.SetActive(true);
         var projectile = go.GetComponent<BaseProjectile>();
         projectile.Initialize();
-        
-        go.GetComponent<HS_ProjectileMover>().Init(pool, e.position, projectile.speed);
+        go.GetComponent<HS_ProjectileMover>().Init(e.owner, pool, projectile.speed);
+
     }
     
     public void OnDespawnPool(DespawnPool e) {

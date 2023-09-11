@@ -5,60 +5,69 @@ using Cysharp.Threading.Tasks;
 
 public abstract class AttackUnitModel : BaseUnitModel, IAttack, IMove {
     public AttackAbility attack {get ;set;}
+    public bool isAttacking{get; set;} = false;
     public bool isDelay = false;
     public MoveAbility move {get; set;}
     public Transform target {get; set;} = null;
     public AIDestinationSetter destinationSetter {get; set;}
-    IAstarAI ai;
+    public Vector3 destination {get; set;}
     Pathfinder pathfinder;
+    protected Transform moveTarget;
     protected override void Awake()
     {
-        base.Awake();
         fsm = new StateMachine<UnitState, StateDriverUnity>(this);
-        fsm.ChangeState(UnitState.Idle);
+        base.Awake();
         pathfinder = gameObject.AddComponent<Pathfinder>();
+        destinationSetter = gameObject.AddComponent<AIDestinationSetter>();
         pathfinder.slowdownDistance = 5f;
         pathfinder.IsReached = OnReached;
-        destinationSetter = gameObject.AddComponent<AIDestinationSetter>();
-        var rigidbody = gameObject.AddComponent<Rigidbody>();
-        rigidbody.isKinematic = true;
-        var sphere = gameObject.AddComponent<SphereCollider>();
-        sphere.isTrigger = true;
-        sphere.radius = 15f;
-        ai = GetComponent<IAstarAI>();
-        ai.maxSpeed = 4f;
-        ai.radius = 1f;
+        var go = new GameObject();
+        go.transform.position = transform.position;
+        moveTarget = go.transform;
+        destination = transform.position;
+        destinationSetter.target = moveTarget;
+    }
+    public void Initialize(AttackUnitData data) {
+        life = new(data.life);
+        attack = new AttackAbility() {detectRange = data.detectRange, attackRange = data.attackRange, minPower = data.minPower, maxPower = data.maxPower};
+        rg.isKinematic = true;
+        detectCollider.isTrigger = true;
+        detectCollider.radius = data.detectRange;
+        pathfinder.maxSpeed = data.moveSpeed;
+        pathfinder.radius = 1f;
     }
     public void Update() {
-        if(destinationSetter.target == null) return;
-        if(Vector3.Distance(transform.position, destinationSetter.target.position) < 5) {
-            if(target != null) Attack();
-            else fsm.ChangeState(UnitState.Idle);
+        if(target == null) return;
+        if(Vector3.Distance(transform.position, target.position) < attack.attackRange) {
+            if(!isAttacking) {
+                isAttacking = true;
+                Attack();
+            }
             pathfinder.OnTargetReached();
         }
     }
-    public void SetDest(Transform target) {
-        destinationSetter.target = target;
+    public void SetDest(Vector3 destination) {
+        this.destination = destination;
+        moveTarget.position = destination;
         fsm.ChangeState(UnitState.Move);
     }
-    public void OnReached() {
-        destinationSetter.target = null;
+    public void SetTarget(Transform target) {
+        fsm.ChangeState(UnitState.Move);
+        this.target = target;
+        destinationSetter.target = target;
     }
-    public void Attack() {
-        fsm.ChangeState(UnitState.Attack);
-        if(isDelay) return;
+    public void OnReached() {
+        moveTarget.position = transform.position;
+        destinationSetter.target = moveTarget;
+        if(!isAttacking) fsm.ChangeState(UnitState.Idle);
+        else fsm.ChangeState(UnitState.Attack);
+    }
+    public virtual void Attack() {
         if(target is not ILife life) return;
         if(!life.life.isAlive) return;
-        if(life.life.Damage(25, gameObject)) {
-            Delay();
-        }
-        else {
-            Debug.Log("Kill Target");
-            target.GetComponent<BaseUnitModel>().fsm.ChangeState(UnitState.Die);
-            target = null;
-        }
+        fsm.ChangeState(UnitState.Attack);
     }
-    protected async void Delay() {
+    protected async UniTask Delay() {
         isDelay = true;
         await UniTask.Delay(1000);
         isDelay = false;
@@ -66,8 +75,8 @@ public abstract class AttackUnitModel : BaseUnitModel, IAttack, IMove {
      private void OnTriggerEnter(Collider collider) {
         if(!collider.gameObject.CompareTag("Unit") && !collider.gameObject.CompareTag("Building")) return;
         if(!CheckTarget(collider.gameObject)) return;
-        target = collider.transform;
-        SetDest(collider.transform);
+        if(Vector3.Distance(transform.position, collider.transform.position) > attack.detectRange + 1) return;
+        SetTarget(collider.transform);
     }
     private void OnTriggerExit(Collider collider) {
         if(!collider.gameObject.CompareTag("Unit") && !collider.gameObject.CompareTag("Building")) return;

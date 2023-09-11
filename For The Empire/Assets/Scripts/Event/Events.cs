@@ -13,6 +13,7 @@ public class SpawnEnemy : IEvent {
 public class SpawnProjectile : IEvent {
     public ProjectileType type;
     public Vector3 position;
+    public RangeUnit owner;
     public Transform target;
 }
 public class DespawnPool : IEvent { 

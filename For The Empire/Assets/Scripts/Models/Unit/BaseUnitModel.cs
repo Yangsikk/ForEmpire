@@ -13,8 +13,13 @@ public abstract class BaseUnitModel : MonoBehaviour, ILife, ITarget, IAnimator{
     public bool isTargetable {get; set;} = true;
     public StateMachine<UnitState, StateDriverUnity> fsm;
     public Animator animator {get; set;}
+    protected Rigidbody rg;
+    protected SphereCollider detectCollider;
     protected virtual void Awake() {
         animator = GetComponent<Animator>();
+        rg = gameObject.AddComponent<Rigidbody>();
+        detectCollider = gameObject.AddComponent<SphereCollider>();
+        fsm.ChangeState(UnitState.Idle);
     }
     void Update()
 	{

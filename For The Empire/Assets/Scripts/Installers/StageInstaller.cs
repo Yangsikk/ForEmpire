@@ -30,7 +30,7 @@ namespace Game {
 
         public void Update() {
             if(Input.GetMouseButtonDown(0)) {
-                spawn.Spawn("test", UnitType.Melee, UnitTribe.Human);
+                spawn.Spawn("test", UnitType.Range, UnitTribe.Human);
             }
             if(Input.GetKeyDown(KeyCode.S)) {
                 var enemy = spawn.Spawn("enemy", SpawnType.Enemy);

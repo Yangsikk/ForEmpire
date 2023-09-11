@@ -15,15 +15,18 @@ public class HS_ProjectileMover : MonoBehaviour
     public GameObject[] Detached;
     public bool isStart = false;
     public IObjectPool<GameObject> pool;
-    public void Init(IObjectPool<GameObject> pool, Vector3 pos, float speed)
+    public RangeUnit owner;
+    public void Init(RangeUnit owner, IObjectPool<GameObject> pool,float speed)
     {
+        this.owner = owner;
         this.pool = pool;
         this.speed = speed;
         rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.None;
         if (flash != null)
         {
             //Instantiate flash effect on projectile position
-            var flashInstance = Instantiate(flash, pos, Quaternion.identity);
+            var flashInstance = Instantiate(flash, owner.transform.position + owner.transform.forward, Quaternion.identity);
             flashInstance.transform.forward = gameObject.transform.forward;
             
             //Destroy flash effect depending on particle Duration time
@@ -38,19 +41,16 @@ public class HS_ProjectileMover : MonoBehaviour
                 Destroy(flashInstance, flashPsParts.main.duration);
             }
         }
-        DespawnPool();
 	}
-    public async void DespawnPool() {
-        await UniTask.Delay(5000);
-        if(!gameObject.activeSelf) return;
-        pool.Release(gameObject);
-    }
     void FixedUpdate ()
     {
 		if (speed != 0)
         {
             rb.velocity = transform.forward * speed;
             //transform.position += transform.forward * (speed * Time.deltaTime);         
+        }
+        else {
+            Debug.Log("speed is zero");
         }
 	}
 

@@ -28,7 +28,7 @@ public class UnitProcess {
                     go.tag = "Unit";
                     go.transform.SetParent(e.gameObject.transform);
                     var melee = go.AddComponent<RangeUnit>();
-                    melee.Initialize(new AttackUnitData(){life = 40, attackRange = 12.5f, moveSpeed = 2f, detectRange = 20f, minPower = 7.5f, maxPower = 10f});
+                    melee.Initialize(new AttackUnitData(){life = 40, attackRange = 20f, moveSpeed = 2f, detectRange = 30f, minPower = 7.5f, maxPower = 10f});
                     melee.teamIndex = 0;
                 }
             break;

@@ -7,7 +7,7 @@ public abstract class BaseUnitModel : MonoBehaviour, ILife, ITarget, IAnimator{
     public enum UnitState {
         Idle, Attack, Move, Die
     }
-    public int teamIndex;
+    public int teamIndex {get; set;}
     public bool isAttack = false;
     public LifeAbility life {get; set;}
     public bool isTargetable {get; set;} = true;

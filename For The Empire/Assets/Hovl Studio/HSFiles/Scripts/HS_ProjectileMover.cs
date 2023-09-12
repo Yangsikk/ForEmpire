@@ -41,24 +41,19 @@ public class HS_ProjectileMover : MonoBehaviour
                 Destroy(flashInstance, flashPsParts.main.duration);
             }
         }
+        isStart = true;
+        Launch();
 	}
-    void FixedUpdate ()
-    {
-		if (speed != 0)
-        {
-            rb.velocity = transform.forward * speed;
-            //transform.position += transform.forward * (speed * Time.deltaTime);         
-        }
-        else {
-            Debug.Log("speed is zero");
-        }
-	}
+    public void Launch() {
+        rb.velocity = transform.forward * speed;
+    }
 
-    //https ://docs.unity3d.com/ScriptReference/Rigidbody.OnCollisionEnter.html
     void OnCollisionEnter(Collision collision)
     {
+        if(collision is not ITarget target) return;
         //Lock all axes movement and rotation
         rb.constraints = RigidbodyConstraints.FreezeAll;
+        isStart = false;
         speed = 0;
 
         ContactPoint contact = collision.contacts[0];
@@ -96,6 +91,7 @@ public class HS_ProjectileMover : MonoBehaviour
             }
         }
         //Destroy projectile on collision
-        pool.Release(gameObject);
+    
+        if(gameObject.activeSelf) pool.Release(gameObject);
     }
 }

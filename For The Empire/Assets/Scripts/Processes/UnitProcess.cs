@@ -26,9 +26,11 @@ public class UnitProcess {
                     VHumanArcher archer = new();
                     var go = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(archer.prefabPath));
                     go.tag = "Unit";
+                    go.layer = 6;
                     go.transform.SetParent(e.gameObject.transform);
                     var melee = go.AddComponent<RangeUnit>();
-                    melee.Initialize(new AttackUnitData(){life = 40, attackRange = 20f, moveSpeed = 2f, detectRange = 30f, minPower = 7.5f, maxPower = 10f});
+                    melee.CreatePool<IceProjectile>();
+                    melee.Initialize(new AttackUnitData(){life = 40, attackRange = 50f, moveSpeed = 2f, detectRange = 50f, minPower = 7.5f, maxPower = 10f});
                     melee.teamIndex = 0;
                 }
             break;
@@ -42,6 +44,10 @@ public class UnitProcess {
         go.transform.localPosition = Vector3.zero;
         var melee = go.AddComponent<MeleeUnit>();
         melee.Initialize(new AttackUnitData(){life = 50, attackRange = 5f, moveSpeed = 4f, detectRange = 10f, minPower = 10f, maxPower = 15f});
+        go.layer = 8;
+        // var melee = go.AddComponent<RangeUnit>();
+        // melee.CreatePool<IceProjectile>();
+        // melee.Initialize(new AttackUnitData(){life = 40, attackRange = 20f, moveSpeed = 2f, detectRange = 30f, minPower = 7.5f, maxPower = 10f});
         melee.teamIndex = 1;
         melee.SetDest(e.target.position);
     }

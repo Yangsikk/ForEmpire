@@ -73,6 +73,7 @@ public abstract class AttackUnitModel : BaseUnitModel, IAttack, IMove {
         isDelay = false;
     }
      private void OnTriggerEnter(Collider collider) {
+        if(target != null) return;
         if(!collider.gameObject.CompareTag("Unit") && !collider.gameObject.CompareTag("Building")) return;
         if(!CheckTarget(collider.gameObject)) return;
         if(Vector3.Distance(transform.position, collider.transform.position) > attack.detectRange + 1) return;

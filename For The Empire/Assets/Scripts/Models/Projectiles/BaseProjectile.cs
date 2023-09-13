@@ -3,7 +3,8 @@ using UnityEngine;
 public enum ProjectileType {
     simple, ice, magic
 }
-public abstract class BaseProjectile : MonoBehaviour,IProjectile {
+public abstract class BaseProjectile : MonoBehaviour, IProjectile {
+    public string defaultPath {get; protected set;}
     public bool IsLaunched {get; protected set;}
     public Vector3 startPostion {get => transform.position;}
     public Vector3 startDirection {get => (startPostion - targetPosition).normalized;}
@@ -11,6 +12,7 @@ public abstract class BaseProjectile : MonoBehaviour,IProjectile {
     public float speed { get; set;} = 5;
     public IAttack owner {get; protected set;}
     public virtual void Initialize() { 
+
     }
     public void Launch(Vector3 targetPos) {
         IsLaunched = true;

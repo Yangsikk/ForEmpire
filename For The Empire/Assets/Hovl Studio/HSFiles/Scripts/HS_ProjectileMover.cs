@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Pool;
 using Cysharp.Threading.Tasks;
@@ -13,14 +14,16 @@ public class HS_ProjectileMover : MonoBehaviour
     public GameObject flash;
     private Rigidbody rb;
     public GameObject[] Detached;
-    public bool isStart = false;
-    public IObjectPool<GameObject> pool;
+    public IObjectPool<BaseProjectile> pool;
     public RangeUnit owner;
-    public void Init(RangeUnit owner, IObjectPool<GameObject> pool,float speed)
+    public RaycastHit raycast;
+    CancellationTokenSource cts = new();
+    public void Init(RangeUnit owner, IObjectPool<BaseProjectile> pool,float speed)
     {
         this.owner = owner;
         this.pool = pool;
         this.speed = speed;
+        gameObject.layer =  owner.teamIndex == 0 ? 7 : 9;
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.None;
         if (flash != null)
@@ -41,20 +44,24 @@ public class HS_ProjectileMover : MonoBehaviour
                 Destroy(flashInstance, flashPsParts.main.duration);
             }
         }
-        isStart = true;
         Launch();
+        Despawn().Forget();
 	}
-    public void Launch() {
-        rb.velocity = transform.forward * speed;
+    public async UniTask Despawn() {
+        await UniTask.Delay(3000, false, PlayerLoopTiming.Update, cancellationToken : cts.Token);
+        pool.Release(transform.parent.gameObject.GetComponent<BaseProjectile>());
     }
-
+    public void Launch() {
+        transform.LookAt(owner.target.position + (Vector3.up * 2));
+        rb.velocity = owner.transform.forward * speed;
+    }
+    void OnDisable() {
+        cts.Cancel();
+    }
     void OnCollisionEnter(Collision collision)
     {
-        if(collision is not ITarget target) return;
         //Lock all axes movement and rotation
         rb.constraints = RigidbodyConstraints.FreezeAll;
-        isStart = false;
-        speed = 0;
 
         ContactPoint contact = collision.contacts[0];
         Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
@@ -91,7 +98,6 @@ public class HS_ProjectileMover : MonoBehaviour
             }
         }
         //Destroy projectile on collision
-    
-        if(gameObject.activeSelf) pool.Release(gameObject);
+        pool.Release(transform.parent.gameObject.GetComponent<BaseProjectile>());
     }
 }

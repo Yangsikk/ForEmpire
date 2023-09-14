@@ -37,21 +37,6 @@ namespace Game {
                 enemy.transform.position = new Vector3(30f, 0f, 20f);
                 EventController.Event.Emit<SpawnEnemy>(new SpawnEnemy() {gameObject = enemy, target = target});
             }
-            if(Input.GetKeyDown(KeyCode.Q)) {
-                var x = Random.Range(-5f, 5f);
-                var z = Random.Range(-5f, 5f);
-                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.simple, position = new Vector3(x, 1, z), target = target});
-            }
-            if(Input.GetKeyDown(KeyCode.W)) {
-                var x = Random.Range(-5f, 5f);
-                var z = Random.Range(-5f, 5f);
-                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.ice, position = new Vector3(x, 1, z), target = target});
-            }
-            if(Input.GetKeyDown(KeyCode.E)) {
-                var x = Random.Range(-5f, 5f);
-                var z = Random.Range(-5f, 5f);
-                EventController.Event.Emit<SpawnProjectile>(new SpawnProjectile() {type = ProjectileType.magic, position = new Vector3(x, 1, z), target = target});
-            }
         }
         private void OnDestroy() {
             GameObject.Destroy(this);

@@ -17,7 +17,7 @@ public class HS_ProjectileMover : MonoBehaviour
     public IObjectPool<BaseProjectile> pool;
     public RangeUnit owner;
     public RaycastHit raycast;
-    CancellationTokenSource cts = new();
+    CancellationTokenSource cts;
     public void Init(RangeUnit owner, IObjectPool<BaseProjectile> pool,float speed)
     {
         this.owner = owner;
@@ -48,10 +48,12 @@ public class HS_ProjectileMover : MonoBehaviour
         Despawn().Forget();
 	}
     public async UniTask Despawn() {
-        await UniTask.Delay(3000, false, PlayerLoopTiming.Update, cancellationToken : cts.Token);
+        cts = new();
+        await UniTask.Delay(5000, cancellationToken : cts.Token);
         pool.Release(transform.parent.gameObject.GetComponent<BaseProjectile>());
     }
     public void Launch() {
+        if(owner.target == null) return;
         transform.LookAt(owner.target.position + (Vector3.up * 2));
         rb.velocity = owner.transform.forward * speed;
     }
@@ -61,6 +63,7 @@ public class HS_ProjectileMover : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         //Lock all axes movement and rotation
+        owner.DamageTarget(collision.transform);
         rb.constraints = RigidbodyConstraints.FreezeAll;
 
         ContactPoint contact = collision.contacts[0];

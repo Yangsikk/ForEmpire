@@ -25,6 +25,7 @@ public class UnitProcess {
                 else if(e.type == UnitType.Range) {
                     VHumanArcher archer = new();
                     var go = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(archer.prefabPath));
+                    go.transform.position = new Vector3(Random.Range(-5f, 5f), 0, Random.Range(-5f, 5f));
                     go.tag = "Unit";
                     go.layer = 6;
                     go.transform.SetParent(e.gameObject.transform);

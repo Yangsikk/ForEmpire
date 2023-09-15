@@ -4842,17 +4842,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1128728136785006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605a456cfc02f6b499a64717539a27e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f5a3a790e26a964da18c33f3da4c356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  hitOffset: 0.1
+  hitOffset: 0
   UseFirePointRotation: 0
   rotationOffset: {x: 0, y: 0, z: 0}
   hit: {fileID: 1493225883543534, guid: 245bf6b0acdf9474ca212c5a4f28b2ce, type: 3}
   flash: {fileID: 1633242581645256, guid: 51e88bfc3811dab48ac0c06617654e1a, type: 3}
-  Detached:
-  - {fileID: 1197552173361330}
+  Detached: []
+  owner: {fileID: 0}
 --- !u!199 &199798872414818832
 ParticleSystemRenderer:
   serializedVersion: 6

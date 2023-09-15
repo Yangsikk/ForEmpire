@@ -11,7 +11,7 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 /[Uu]serSettings/
-!/[Aa]ssets/Scripts
+!/[Aa]ssets/Scripts/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta

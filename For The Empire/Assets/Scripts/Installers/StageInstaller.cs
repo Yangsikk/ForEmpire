@@ -16,7 +16,7 @@ namespace Game {
             Container.Bind<ObjectPoolProcess>().AsSingle();
         }
 
-        protected override void Awake() {
+        protected override async void Awake() {
             base.Awake();
             spawn = Container.Resolve<SpawnProcess>();
             unit = Container.Resolve<UnitProcess>();
@@ -25,7 +25,8 @@ namespace Game {
             pool.Initialize();
             spawn.Initialize();
             unit.Initialize();
-            target = spawn.Spawn("target", new Vector3(-50f, 0.1f, -10f)).transform;
+            var t = await spawn.SpawnBuilding<BaseBuildingModel>("target", ResourcesPath.Instance.castle, new Vector3(0, 0.1f, -30f));
+            target = t.transform; 
         }
 
         public void Update() {

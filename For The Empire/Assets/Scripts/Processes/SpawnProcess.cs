@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 public enum SpawnType {
     Unit,
@@ -48,12 +49,35 @@ public class SpawnProcess {
 
         return go;
     }
-    public GameObject Spawn(string name, Vector3 pos) {
-        var go = Spawn(name);
-        GameObject.CreatePrimitive(PrimitiveType.Sphere).transform.SetParent(go.transform);
+    public async UniTask<GameObject> SpawnBuilding<T>(string name, string path) where T : BaseBuildingModel {
+        var go = await SpawnAsync(name, path);
+        go.AddComponent<T>();
+        go.tag = "Building";
+        return go;
+    }
+    public async UniTask<GameObject> SpawnBuilding<T>(string name, string path, Vector3 pos) where T : BaseBuildingModel {
+        var go = await SpawnBuilding<T>(name, path);
         go.transform.position = pos;
         return go;
     }
+    public GameObject SpawnUnit<T>(string name) where T : BaseUnitModel {
+        var go = Spawn(name);
+        go.AddComponent<T>();
+        go.tag = "Unit";
+        return go;
+    }
+    public GameObject SpawnUnit<T>(string name, Vector3 pos) where T : BaseUnitModel {
+        var go = SpawnUnit<T>(name);
+        go.transform.position = pos;
+        return go;
+    }
+    public async UniTask<GameObject> SpawnAsync(string name, string path) {
+        var go = Spawn(name);
+        var g = await Resources.LoadAsync<GameObject>(path) as GameObject;
+        GameObject.Instantiate<GameObject>(g).transform.SetParent(go.transform);
+        return go;
+    }
+    
     private GameObject SpawnEnemy(string name) {
         var go = Spawn(name);
         return go;

@@ -14,8 +14,7 @@ public class UnitProcess {
         switch(e.tribe) {
             case UnitTribe.Human : 
                 if(e.type == UnitType.Melee) {
-                    VHumanKnight knight = new();
-                    var go = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(knight.prefabPath));
+                    var go = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(ResourcesPath.Instance.human_knight));
                     go.tag = "Unit";
                     go.transform.SetParent(e.gameObject.transform);
                     var melee = go.AddComponent<MeleeUnit>();
@@ -23,8 +22,7 @@ public class UnitProcess {
                     melee.teamIndex = 0;
                 }
                 else if(e.type == UnitType.Range) {
-                    VHumanArcher archer = new();
-                    var go = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(archer.prefabPath));
+                    var go = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(ResourcesPath.Instance.human_archer));
                     go.transform.position = new Vector3(Random.Range(-5f, 5f), 0, Random.Range(-5f, 5f));
                     go.tag = "Unit";
                     go.layer = 6;
@@ -38,17 +36,13 @@ public class UnitProcess {
         }
     }
     public void OnSpawnEnemy(SpawnEnemy e) {
-        VHumanKnight knight = new();
-        var go = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(knight.prefabPath));
+        var go = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(ResourcesPath.Instance.human_knight));
         go.tag = "Unit";
         go.transform.SetParent(e.gameObject.transform);
         go.transform.localPosition = Vector3.zero;
         var melee = go.AddComponent<MeleeUnit>();
         melee.Initialize(new AttackUnitData(){life = 50, attackRange = 5f, moveSpeed = 4f, detectRange = 10f, minPower = 10f, maxPower = 15f});
         go.layer = 8;
-        // var melee = go.AddComponent<RangeUnit>();
-        // melee.CreatePool<IceProjectile>();
-        // melee.Initialize(new AttackUnitData(){life = 40, attackRange = 20f, moveSpeed = 2f, detectRange = 30f, minPower = 7.5f, maxPower = 10f});
         melee.teamIndex = 1;
         melee.SetDest(e.target.position);
     }

@@ -1,8 +1,8 @@
 using UnityEngine;
 
 public class MagicProjectile : BaseProjectile {
-    public readonly string EffectPath = "Effects/Hit 8";
     public override void Initialize() { 
+        defaultPath = "Projectiles/Projectile 8";
         speed = 15f;
     }
 }

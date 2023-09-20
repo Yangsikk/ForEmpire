@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 
 public class BaseBuildingModel : MonoBehaviour, ILife, ITarget{
     
-    public int teamIndex {get; set;}
+    public int teamIndex {get; set;} = 0;
     public LifeAbility life {get; set;}
     public bool isTargetable {get; set;} = true;
     protected Rigidbody rg;
@@ -13,7 +13,10 @@ public class BaseBuildingModel : MonoBehaviour, ILife, ITarget{
         rg = gameObject.AddComponent<Rigidbody>();
         rg.isKinematic = true;
     }
-  
+    public void Initialize(BuildingData data) {
+        life = new(data.life);
+        life.armor = data.armor;
+    }
     protected bool CheckTarget(GameObject go) {
         var unitModel = go.GetComponent<BaseUnitModel>();
         if(unitModel == null) return false;

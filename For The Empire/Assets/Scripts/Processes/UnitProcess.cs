@@ -41,7 +41,7 @@ public class UnitProcess {
         go.transform.SetParent(e.gameObject.transform);
         go.transform.localPosition = Vector3.zero;
         var melee = go.AddComponent<MeleeUnit>();
-        melee.Initialize(new AttackUnitData(){life = 50, attackRange = 5f, moveSpeed = 4f, detectRange = 10f, minPower = 10f, maxPower = 15f});
+        melee.Initialize(new AttackUnitData(){life = 50, attackRange = 5f, moveSpeed = 10f, detectRange = 15f, minPower = 10f, maxPower = 15f});
         go.layer = 8;
         melee.teamIndex = 1;
         melee.SetDest(e.target.position);

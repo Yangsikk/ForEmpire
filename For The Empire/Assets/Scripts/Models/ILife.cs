@@ -16,7 +16,7 @@ public class LifeAbility {
     public bool Damage(float damage, GameObject attacker) {
         if(!isAlive) return false;
         lastAttacker = attacker;
-        damage = damage - armor;
+        damage = damage - armor < 0 ? 1 : damage - armor;
         if(shield > 0) {
             damage = (int)damage - shield > 0 ? damage : 0;
         }

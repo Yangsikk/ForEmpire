@@ -46,10 +46,10 @@ public class RangeUnit: AttackUnitModel   {
     public void DamageTarget(Transform tr) {
         var unit = tr.GetComponent<BaseUnitModel>();
         if(unit == null) return;
-        if(!unit.life.Damage(attack.power, gameObject)) {
+        if(!AttackTarget.Damage(attack.power, gameObject)) {
             Debug.Log("Kill Target");
             isAttack = false;
-            unit.fsm.ChangeState(UnitState.Die);
+            unit?.fsm.ChangeState(UnitState.Die);
             target = null;
             fsm.ChangeState(UnitState.Idle);
         }

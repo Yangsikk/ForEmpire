@@ -9,12 +9,12 @@ public class MeleeUnit : AttackUnitModel {
     }
     public async override void Attack() {
         base.Attack();
-        var unit = target.GetComponent<BaseUnitModel>();
-        while(unit.life.Damage(attack.power, gameObject)) {
+        while(AttackTarget.Damage(attack.power, gameObject)) {
             await UniTask.Delay(1500);
         }
         Debug.Log("Kill Target");
-        unit.fsm.ChangeState(UnitState.Die);
+        var unit = target.GetComponent<BaseUnitModel>();
+        unit?.fsm.ChangeState(UnitState.Die);
         target = null;
         SetDest(destination);
     }

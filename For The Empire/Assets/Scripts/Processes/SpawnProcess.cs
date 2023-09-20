@@ -73,9 +73,11 @@ public class SpawnProcess {
     }
     public async UniTask<GameObject> SpawnAsync(string name, string path) {
         var go = Spawn(name);
-        var g = await Resources.LoadAsync<GameObject>(path) as GameObject;
-        GameObject.Instantiate<GameObject>(g).transform.SetParent(go.transform);
-        return go;
+        var temp = await Resources.LoadAsync<GameObject>(path) as GameObject;
+        var g = GameObject.Instantiate<GameObject>(temp);
+        g.name = name;
+        g.transform.SetParent(go.transform);
+        return g;
     }
     
     private GameObject SpawnEnemy(string name) {

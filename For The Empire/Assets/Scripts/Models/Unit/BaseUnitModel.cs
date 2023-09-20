@@ -15,6 +15,7 @@ public abstract class BaseUnitModel : MonoBehaviour, ILife, ITarget, IAnimator{
     public Animator animator {get; set;}
     protected Rigidbody rg;
     protected SphereCollider detectCollider;
+    protected LifeAbility AttackTarget;
     protected virtual void Awake() {
         animator = GetComponent<Animator>();
         rg = gameObject.AddComponent<Rigidbody>();
@@ -50,9 +51,19 @@ public abstract class BaseUnitModel : MonoBehaviour, ILife, ITarget, IAnimator{
         Destroy(effect, 2f);
     }
     protected bool CheckTarget(GameObject go) {
-        var unitModel = go.GetComponent<BaseUnitModel>();
-        if(unitModel == null) return false;
-        if(unitModel.teamIndex == teamIndex) return false;
-        return true;
+        var b = (CheckBuilding(go) || CheckUnit(go));
+        return b;
+    }
+    private bool CheckUnit(GameObject go) {
+        var unit = go.GetComponent<BaseUnitModel>();
+        var b = unit?.teamIndex != teamIndex;
+        AttackTarget = b ? unit?.life : null;
+        return b;
+    }
+    private bool CheckBuilding(GameObject go) {
+        var building = go.GetComponent<BaseBuildingModel>();
+        var b = building?.teamIndex != teamIndex;
+        AttackTarget = b ? building?.life : null;
+        return b;
     }
 }

@@ -11,6 +11,7 @@ public abstract class AttackUnitModel : BaseUnitModel, IAttack, IMove {
     public Transform target {get; set;} = null;
     public AIDestinationSetter destinationSetter {get; set;}
     public Vector3 destination {get; set;}
+    Vector3 attackPoint;
     Pathfinder pathfinder;
     protected Transform moveTarget;
     protected override void Awake()
@@ -38,7 +39,7 @@ public abstract class AttackUnitModel : BaseUnitModel, IAttack, IMove {
     }
     public void Update() {
         if(target == null) return;
-        if(Vector3.Distance(transform.position, target.position) < attack.attackRange) {
+        if(Vector3.Distance(transform.position, attackPoint) < attack.attackRange) {
             if(!isAttacking) {
                 isAttacking = true;
                 Attack();
@@ -72,11 +73,14 @@ public abstract class AttackUnitModel : BaseUnitModel, IAttack, IMove {
         await UniTask.Delay(1000);
         isDelay = false;
     }
+    
      private void OnTriggerEnter(Collider collider) {
         if(target != null) return;
         if(!collider.gameObject.CompareTag("Unit") && !collider.gameObject.CompareTag("Building")) return;
         if(!CheckTarget(collider.gameObject)) return;
-        if(Vector3.Distance(transform.position, collider.transform.position) > attack.detectRange + 1) return;
+        if(AttackTarget == null) return;
+        attackPoint = collider.ClosestPoint(transform.position);
+        if(Vector3.Distance(transform.position, attackPoint) > attack.detectRange + 1) return;
         SetTarget(collider.transform);
     }
     private void OnTriggerExit(Collider collider) {
